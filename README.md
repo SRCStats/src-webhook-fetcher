@@ -1,1 +1,2 @@
-# src-webhook-fetcher
+# SRC Webhook Fetcher
+A relatively basic program designed to search the API of [speedrun.com](https://speedrun.com) for new runs in the new, verified, and rejected categories, then subsequently store them in a MongoDB database. Designed for a serverless model, working alongside another function to respond to webhooks for each run.
