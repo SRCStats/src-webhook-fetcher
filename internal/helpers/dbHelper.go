@@ -56,41 +56,30 @@ func Connect() *mongo.Client {
 	return c
 }
 
-func Create(runs *[]s.Run) {
-	runsItf := make([]interface{}, len(*runs))
-	for i, run := range *runs {
-		runsItf[i] = run
-	}
+func Create(runs s.Response) {
 	c := Connect()
 	ctx := context.Background()
 	defer c.Disconnect(ctx)
 
 	runCollection := c.Database(database).Collection(collection)
-	r, err := runCollection.InsertMany(ctx, runsItf)
+	r, err := runCollection.InsertOne(ctx, runs)
 	if err != nil {
 		log.Fatalf("The runs couldn't be added!\n%v", err)
 	}
-	fmt.Println("Added runs", r.InsertedIDs)
+	fmt.Println("Added runs", r.InsertedID)
 }
 
-func List(scope string) *[]s.Run {
+func List(scope string) *s.Response {
 	c := Connect()
 	ctx := context.Background()
 	defer c.Disconnect(ctx)
-
+	var runs s.Response
 	runCollection := c.Database(database).Collection(collection)
-	opts := options.Find().SetSort(bson.D{{Key: "order", Value: 1}})
-	rs, err := runCollection.Find(ctx, bson.D{{Key: "scope", Value: scope}}, opts)
-	var runs []s.Run
+	err := runCollection.FindOne(ctx, bson.D{{Key: "scope", Value: scope}}).Decode(&runs)
 
 	if err != nil {
-		log.Fatalf("The runs couldn't be listed!\n%v", err)
+		log.Printf("The runs couldn't be listed!\n%v", err)
 	}
-	err = rs.All(ctx, &runs)
-	if err != nil {
-		log.Fatalf("The runs couldn't be listed!\n%v", err)
-	}
-
 	return &runs
 }
 
@@ -104,5 +93,5 @@ func Delete(scope string) {
 	if err != nil {
 		log.Fatalf("The runs couldn't be deleted!\n%v", err)
 	}
-	fmt.Printf("Deleted %v runs\n", res.DeletedCount)
+	fmt.Printf("Deleted %v entry for scope %v\n", res.DeletedCount, scope)
 }

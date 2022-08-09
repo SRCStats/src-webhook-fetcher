@@ -37,23 +37,21 @@ func main() {
 func handleRuns(r *s.Response, scope string) {
 	wg.Add(1)
 	runs := s.MakeRuns(*r, scope)
-	runs = update(runs, scope)
-	if len(*runs) != 0 {
-		// this is inefficient, probably better to shift the orders instead of deleting all of them
+	runs = *update(&runs, scope)
+	if len(runs.Data) != 0 {
 		h.Delete(scope)
-		fmt.Println(runs)
 		h.Create(runs)
 	}
 	wg.Done()
 }
 
-func update(runs *[]s.Run, scope string) *[]s.Run {
+func update(runs *s.Response, scope string) *s.Response {
 	exists := false
-	var newRuns []s.Run
-	existingRuns := h.List(scope)
-	for _, run := range *runs {
-		for _, xRun := range *existingRuns {
-			if run.SiteId == xRun.SiteId {
+	var newRuns []s.Data
+	existingRuns := h.List(scope).Data
+	for _, run := range runs.Data {
+		for _, xRun := range existingRuns {
+			if run.ID == xRun.ID {
 				exists = true
 				break
 			}
@@ -61,17 +59,19 @@ func update(runs *[]s.Run, scope string) *[]s.Run {
 		if exists {
 			break
 		}
+		run.New = true
 		newRuns = append(newRuns, run)
 	}
 	fmt.Printf("New runs found for scope %v: %v\n", scope, len(newRuns))
 	i := len(newRuns)
 	if i == 0 {
-		return &newRuns
+		return &s.Response{Data: newRuns, Scope: scope}
 	}
 	for i < 20 {
-		(*existingRuns)[i].Order = i
-		newRuns = append(newRuns, (*existingRuns)[i])
+		(existingRuns)[i].Order = i
+		(existingRuns)[i].New = false
+		newRuns = append(newRuns, (existingRuns)[i])
 		i++
 	}
-	return &newRuns
+	return &s.Response{Data: newRuns, Scope: scope}
 }

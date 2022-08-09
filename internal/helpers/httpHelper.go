@@ -12,11 +12,12 @@ import (
 )
 
 var client http.Client = http.Client{
-	Timeout: time.Second * 5,
+	Timeout: time.Second * 15,
 }
 
+// todo: implement pagination to all of these
 func New(c chan s.Response) {
-	r, err := client.Do(createReq("?status=new&orderby=submitted&direction=desc"))
+	r, err := client.Do(createReq("?status=new&orderby=submitted&direction=desc&embed=category,game,level,region,platform"))
 	if err != nil {
 		log.Panic(err)
 	}
@@ -24,7 +25,7 @@ func New(c chan s.Response) {
 }
 
 func Verified(c chan s.Response) {
-	r, err := client.Do(createReq("?status=verified&orderby=verify-date&direction=desc"))
+	r, err := client.Do(createReq("?status=verified&orderby=verify-date&direction=desc&embed=category,game,level,region,platform"))
 	if err != nil {
 		log.Panic(err)
 	}
@@ -32,7 +33,7 @@ func Verified(c chan s.Response) {
 }
 
 func Rejected(c chan s.Response) {
-	r, err := client.Do(createReq("?status=rejected&orderby=verify-date&direction=desc"))
+	r, err := client.Do(createReq("?status=rejected&orderby=verify-date&direction=desc&embed=category,game,level,region,platform"))
 	if err != nil {
 		log.Panic(err)
 	}
