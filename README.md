@@ -12,11 +12,12 @@ cd src-webhook-fetcher
 ```
 Configure a new MongoDB instance, or use an existing one. ([Azure Cosmos DB](https://azure.microsoft.com/en-us/services/cosmos-db/) w/ MongoDB API is used in production, but any will do.) Run the following commands to set the environment variables:
 
+*The {Value} fields are placeholders.*
 ### Windows
 ```bat
-set SRC_WEBHOOK_MONGODB_CONNECTION_STRING={Connection_String}
-set SRC_WEBHOOK_DATABASE={Database_Name} &:: "srcstats" Recommended
-set SRC_WEBHOOK_COLLECTION={Collection_Name} &:: "webhook-last-runs" Recommended
+setx SRC_WEBHOOK_MONGODB_CONNECTION_STRING {Connection_String}
+setx SRC_WEBHOOK_DATABASE {Database_Name} &:: "srcstats" Recommended
+setx SRC_WEBHOOK_COLLECTION {Collection_Name} &:: "webhook-last-runs" Recommended
 ```
 ### Mac/Linux
 ```bash
