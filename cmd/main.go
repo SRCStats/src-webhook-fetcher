@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sync"
 
-	h "github.com/suprnova/src-webhook-fetcher/internal/helpers"
-	s "github.com/suprnova/src-webhook-fetcher/internal/structs"
+	h "github.com/srcstats/src-webhook-fetcher/internal/helpers"
+	s "github.com/srcstats/src-webhook-fetcher/internal/structs"
 )
 
 var wg sync.WaitGroup

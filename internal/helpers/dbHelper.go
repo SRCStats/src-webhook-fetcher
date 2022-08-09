@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	s "github.com/suprnova/src-webhook-fetcher/internal/structs"
+	s "github.com/srcstats/src-webhook-fetcher/internal/structs"
 )
 
 var (

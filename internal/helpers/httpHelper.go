@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"time"
 
-	s "github.com/suprnova/src-webhook-fetcher/internal/structs"
+	s "github.com/srcstats/src-webhook-fetcher/internal/structs"
 )
 
 var client http.Client = http.Client{
