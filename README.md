@@ -11,13 +11,13 @@ git clone https://github.com/SRCStats/src-webhook-fetcher.git
 cd src-webhook-fetcher
 ```
 Configure a new MongoDB instance, or use an existing one. ([Azure Cosmos DB](https://azure.microsoft.com/en-us/services/cosmos-db/) w/ MongoDB API is used in production, but any will do.) Run the following commands to set the environment variables:
-
 *The {Value} fields are placeholders.*
 ### Windows
 ```bat
 setx SRC_WEBHOOK_MONGODB_CONNECTION_STRING {Connection_String}
 setx SRC_WEBHOOK_DATABASE {Database_Name} &:: "srcstats" Recommended
 setx SRC_WEBHOOK_COLLECTION {Collection_Name} &:: "webhook-last-runs" Recommended
+setx SRC_WEBHOOK_RUN_URI {src-webhook-sender url} &:: Set to http://localhost if not required
 ```
 ### Mac/Linux
 ```bash
@@ -25,11 +25,12 @@ setx SRC_WEBHOOK_COLLECTION {Collection_Name} &:: "webhook-last-runs" Recommende
 export SRC_WEBHOOK_MONGODB_CONNECTION_STRING={Connection_String}
 export SRC_WEBHOOK_DATABASE={Database_Name} # "srcstats" Recommended
 export SRC_WEBHOOK_COLLECTION={Collection_Name} # "webhook-last-runs" Recommended
+export SRC_WEBHOOK_RUN_URI {src-webhook-sender url} # Set to http://localhost if not required
 ```
 Finally, run the following go commands to finish the configuration and run the project:
 ```
 go get ./...
-go run cmd/main.go
+go run fetch.go
 ```
 
 # License
