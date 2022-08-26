@@ -176,7 +176,7 @@ func MakeRuns(res Response, scope string) Response {
 	return res
 }
 
-func Main() {
+func main() {
 	chNew, chVerified, chRejected := make(chan Response), make(chan Response), make(chan Response)
 	go New(chNew)
 	go Verified(chVerified)
